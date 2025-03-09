@@ -21,13 +21,4 @@ class Publicacion extends Model
         return $this->belongsTo(User::class, 'id_usuario');
     }
 
-    public function likes()
-    {
-        return $this->belongsToMany(User::class, 'likes');
-    }
-
-    public function retweets()
-    {
-        return $this->belongsToMany(User::class, 'retweets');
-    }
 }

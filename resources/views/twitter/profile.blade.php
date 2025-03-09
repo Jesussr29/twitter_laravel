@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Twitter</title>
+    <title>Perfil de Usuario</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -66,7 +66,6 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
-
                     <li class="nav-item">
                         <span class="navbar-text me-3">Bienvenido, {{ Auth::user()->name }}!</span>
                     </li>
@@ -93,27 +92,29 @@
     <div class="container mt-4">
         <div class="row">
             <div class="col-md-8 offset-md-2">
-                <input type="text" id="searchBox" class="form-control me-2" placeholder="Buscar usuario..." onkeyup="buscarUsuario()"><br>
-            
-                <form action="{{ route('publicacion.store') }}" method="POST">
-                    @csrf
-                    <div class="mb-3">
-                        <textarea name="contenido" class="form-control" placeholder="¿Qué estás pensando?" rows="3" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Publicar</button>
-                </form>
-
+                <h2>Publicaciones de {{ $usuario->name }}</h2>
                 <div class="publicaciones mt-4">
                     @foreach ($publicaciones as $publicacion)
-                        <div class="card mb-3 publicacion" id="publicacion-{{ $publicacion->id }}" data-usuario="{{ strtolower($publicacion->usuario->name) }}">
+                        <div class="card mb-3" id="publicacion-{{ $publicacion->id }}">
                             <div class="card-body">
                                 <h5 class="card-title">{{ $publicacion->usuario->name }}</h5>
                                 <p class="card-text">{{ $publicacion->contenido }}</p>
+                                <div class="d-flex justify-content-between">
+                                    @if ($publicacion->id_usuario == Auth::id())
+                                        <div>
+                                            <a href="{{ route('publicacion.edit', $publicacion->id) }}" class="btn btn-outline-warning">Editar</a>
+                                            <form action="{{ route('publicacion.destroy', $publicacion->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+                                            </form>
+                                        </div>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     @endforeach
                 </div>
-
             </div>
         </div>
     </div>
@@ -122,6 +123,37 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function() {
+            // Manejar los likes
+            $('.like-button').click(function() {
+                var publicacionId = $(this).data('id');
+                var likeButton = $(this);
+                $.ajax({
+                    url: '/publicacion/' + publicacionId + '/like',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        likeButton.find('.like-count').text(response.likes);
+                    }
+                });
+            });
+
+            // Manejar los retweets
+            $('.retweet-button').click(function() {
+                var publicacionId = $(this).data('id');
+                var retweetButton = $(this);
+                $.ajax({
+                    url: '/publicacion/' + publicacionId + '/retweet',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        retweetButton.find('.retweet-count').text(response.retweets);
+                    }
+                });
+            });
 
             // Manejar el cambio de tema
             const themeToggle = document.getElementById('theme-toggle');
@@ -134,33 +166,6 @@
                 localStorage.setItem('theme', theme);
             });
         });
-        
-    function buscarUsuario() {
-        const query = document.getElementById('searchBox').value.toLowerCase();
-        const publicaciones = document.querySelectorAll('.publicacion');
-        const paginationNav = document.getElementById('paginationNav'); // Obtener el contenedor de la paginación
-
-        let hayCoincidencias = false;
-
-        // Filtrar las publicaciones
-        publicaciones.forEach(publicacion => {
-            const usuario = publicacion.getAttribute('data-usuario').toLowerCase();
-            if (usuario.includes(query)) {
-                publicacion.style.display = 'block';
-                hayCoincidencias = true;
-            } else {
-                publicacion.style.display = 'none';
-            }
-        });
-
-        // Ocultar la paginación si hay búsqueda activa, mostrarla si no hay búsqueda
-        if (query.trim() !== "" && hayCoincidencias) {
-            paginationNav.classList.add('d-none');
-        } else {
-            paginationNav.classList.remove('d-none');
-        }
-    }
-
     </script>
 </body>
 </html>

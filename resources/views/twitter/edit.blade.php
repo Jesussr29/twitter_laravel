@@ -13,7 +13,7 @@
             --bg-color: white;
             --text-color: black;
             --card-bg-color: white;
-            --nav-bg-color: lightgray;
+            --nav-bg-color: #f8f9fa;
             --card-text-color: black;
             --button-text-color: black;
         }
@@ -33,34 +33,56 @@
             background-color: var(--card-bg-color);
             color: var(--card-text-color);
         }
-        .navbar, .btn {
+        .navbar {
             background-color: var(--nav-bg-color);
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        .btn, .btn-outline-primary, .btn-outline-success, .btn-warning, .btn-danger {
-            color: var(--button-text-color);
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .navbar-toggler {
+            border: none;
+        }
+        .navbar-text {
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+        .btn {
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Mi Twitter</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item">
-                        <span class="navbar-text">Bienvenido, {{ Auth::user()->name }}!</span>
+                        <span class="navbar-text me-3">Bienvenido, {{ Auth::user()->name }}!</span>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('publicacion.index') }}" class="btn btn-outline-primary me-2">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('profile') }}" class="btn btn-outline-success me-2">Perfil</a>
                     </li>
                     <li class="nav-item">
                         <form action="{{ route('logout') }}" method="POST" class="d-inline">
                             @csrf
-                            <button type="submit" class="btn btn-danger ms-3">Cerrar sesión</button>
+                            <button type="submit" class="btn btn-danger me-2">Cerrar sesión</button>
                         </form>
                     </li>
                     <li class="nav-item">
-                        <button id="theme-toggle" class="btn btn-secondary ms-3">Cambiar tema</button>
+                        <button id="theme-toggle" class="btn btn-secondary">Cambiar tema</button>
                     </li>
                 </ul>
             </div>

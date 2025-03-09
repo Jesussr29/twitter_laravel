@@ -10,7 +10,7 @@ class TwitterController extends Controller
 {
     public function index()
     {
-        $publicaciones = Publicacion::all();
+        $publicaciones = Publicacion::orderBy('created_at', 'desc')->get();
         return view('twitter.index', compact('publicaciones'));
     }
 
