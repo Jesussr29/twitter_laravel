@@ -61,31 +61,4 @@ class TwitterController extends Controller
         return redirect()->route('publicacion.index');
     }
 
-    public function like($id)
-    {
-        $publicacion = Publicacion::findOrFail($id);
-        if ($publicacion->likes()->where('user_id', Auth::id())->exists()) {
-            $publicacion->likes()->detach(Auth::id());
-            $publicacion->decrement('likes');
-        } else {
-            $publicacion->likes()->attach(Auth::id());
-            $publicacion->increment('likes');
-        }
-
-        return response()->json(['likes' => $publicacion->likes]);
-    }
-
-    public function retweet($id)
-    {
-        $publicacion = Publicacion::findOrFail($id);
-        if ($publicacion->retweets()->where('user_id', Auth::id())->exists()) {
-            $publicacion->retweets()->detach(Auth::id());
-            $publicacion->decrement('retweet');
-        } else {
-            $publicacion->retweets()->attach(Auth::id());
-            $publicacion->increment('retweet');
-        }
-
-        return response()->json(['retweets' => $publicacion->retweet]);
-    }
 }

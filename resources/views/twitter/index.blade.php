@@ -66,7 +66,6 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
-
                     <li class="nav-item">
                         <span class="navbar-text me-3">Bienvenido, {{ Auth::user()->name }}!</span>
                     </li>
@@ -109,11 +108,29 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ $publicacion->usuario->name }}</h5>
                                 <p class="card-text">{{ $publicacion->contenido }}</p>
+                                
+                                <!-- Comment Section -->
+                                <p class="card-text"> -> Comentarios:</p>
+                                <div class="comments mt-3">
+                                    @foreach ($publicacion->comments as $comment)
+                                        <div class="comment mb-2">
+                                            <strong>{{ $comment->user->name }}</strong>: {{ $comment->content }}
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <br>
+                                <!-- Add Comment Form -->
+                                <form action="{{ route('comments.store', $publicacion->id) }}" method="POST">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <textarea name="content" class="form-control" placeholder="Añadir un comentario..." rows="2" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Comentar</button>
+                                </form>
                             </div>
                         </div>
                     @endforeach
                 </div>
-
             </div>
         </div>
     </div>
@@ -122,7 +139,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function() {
-
             // Manejar el cambio de tema
             const themeToggle = document.getElementById('theme-toggle');
             const currentTheme = localStorage.getItem('theme') || 'light';
@@ -135,32 +151,31 @@
             });
         });
         
-    function buscarUsuario() {
-        const query = document.getElementById('searchBox').value.toLowerCase();
-        const publicaciones = document.querySelectorAll('.publicacion');
-        const paginationNav = document.getElementById('paginationNav'); // Obtener el contenedor de la paginación
+        function buscarUsuario() {
+            const query = document.getElementById('searchBox').value.toLowerCase();
+            const publicaciones = document.querySelectorAll('.publicacion');
+            const paginationNav = document.getElementById('paginationNav'); // Obtener el contenedor de la paginación
 
-        let hayCoincidencias = false;
+            let hayCoincidencias = false;
 
-        // Filtrar las publicaciones
-        publicaciones.forEach(publicacion => {
-            const usuario = publicacion.getAttribute('data-usuario').toLowerCase();
-            if (usuario.includes(query)) {
-                publicacion.style.display = 'block';
-                hayCoincidencias = true;
+            // Filtrar las publicaciones
+            publicaciones.forEach(publicacion => {
+                const usuario = publicacion.getAttribute('data-usuario').toLowerCase();
+                if (usuario.includes(query)) {
+                    publicacion.style.display = 'block';
+                    hayCoincidencias = true;
+                } else {
+                    publicacion.style.display = 'none';
+                }
+            });
+
+            // Ocultar la paginación si hay búsqueda activa, mostrarla si no hay búsqueda
+            if (query.trim() !== "" && hayCoincidencias) {
+                paginationNav.classList.add('d-none');
             } else {
-                publicacion.style.display = 'none';
+                paginationNav.classList.remove('d-none');
             }
-        });
-
-        // Ocultar la paginación si hay búsqueda activa, mostrarla si no hay búsqueda
-        if (query.trim() !== "" && hayCoincidencias) {
-            paginationNav.classList.add('d-none');
-        } else {
-            paginationNav.classList.remove('d-none');
         }
-    }
-
     </script>
 </body>
 </html>

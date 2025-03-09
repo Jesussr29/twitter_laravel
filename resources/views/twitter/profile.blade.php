@@ -111,6 +111,24 @@
                                         </div>
                                     @endif
                                 </div>
+                                
+                                <!-- Comment Section -->
+                                <div class="comments mt-3">
+                                    @foreach ($publicacion->comments as $comment)
+                                        <div class="comment mb-2">
+                                            <strong>{{ $comment->user->name }}</strong>: {{ $comment->content }}
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                                <!-- Add Comment Form -->
+                                <form action="{{ route('comments.store', $publicacion->id) }}" method="POST">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <textarea name="content" class="form-control" placeholder="Añade tu respuesta..." rows="2" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Responder</button>
+                                </form>
                             </div>
                         </div>
                     @endforeach

@@ -7,7 +7,13 @@
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 <body>
+    <div class="black"></div>
     <div class="register-container">
+
+        <div class="foto">
+            <img src="{{ asset('img/logo.png') }}" alt="">
+        </div>
+
         <h2>Registrarse</h2>
 
         <form method="POST" action="{{ route('register') }}">
@@ -24,7 +30,7 @@
                 <label for="email">Correo Electrónico</label>
                 <input type="email" id="email" name="email" value="{{ old('email') }}" required>
                 @error('email')
-                    <span class="error">{{ $message }}</span>
+                    <span class="error">Correo electronico ya registrado</span>
                 @enderror
             </div>
 
@@ -32,15 +38,15 @@
                 <label for="password">Contraseña</label>
                 <input type="password" id="password" name="password" required>
                 @error('password')
-                    <span class="error">{{ $message }}</span>
+                    <span class="error">La contraseña debe tener minimo 8 caracteres</span>
                 @enderror
             </div>
 
             <div class="form-group">
                 <label for="password_confirmation">Confirmar Contraseña</label>
                 <input type="password" id="password_confirmation" name="password_confirmation" required>
-                @error('password_confirmation')
-                    <span class="error">{{ $message }}</span>
+                @error('password')
+                    <span class="error">Las contraseñas no coinciden</span>
                 @enderror
             </div>
 
@@ -61,14 +67,45 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+    background-image: url("{{ asset('img/fondo.gif') }}");
+    background-position: center;
+    background-size: cover;
+}
+
+.black{
+    position: absolute;
+    background-color: black;
+    opacity: 40%;
+    width: 100%;
+    height: 100vh;
+    z-index: 1000;
+}
+
+.logo{
+    z-index: 1002;
+    background-color: rgba(255, 255, 255, 0.36);
+    padding: 50px;
+    border-radius: 15px;
 }
 
 .register-container {
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.71);
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 300px;
+    z-index: 1001;
+}
+
+.foto img{
+    max-width: 100px;
+
+}
+
+.foto{
+    display: flex;
+    width: 100%;
+    justify-content: center;
 }
 
 h2 {

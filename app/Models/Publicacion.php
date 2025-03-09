@@ -21,4 +21,8 @@ class Publicacion extends Model
         return $this->belongsTo(User::class, 'id_usuario');
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

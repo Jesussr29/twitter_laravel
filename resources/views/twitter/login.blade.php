@@ -7,7 +7,12 @@
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 <body>
+    <div class="black"></div>
     <div class="login-container">
+
+        <div class="foto">
+            <img src="{{ asset('img/logo.png') }}" alt="">
+        </div>
         <h2>Iniciar sesión</h2>
 
         <form method="POST" action="{{ route('login') }}">
@@ -16,7 +21,7 @@
                 <label for="email">Correo Electrónico</label>
                 <input type="email" id="email" name="email" required autofocus>
                 @error('email')
-                    <span class="error">{{ $message }}</span>
+                    <span class="error">Nombre de usuario o contraseña incorrectos</span>
                 @enderror
             </div>
 
@@ -24,14 +29,8 @@
                 <label for="password">Contraseña</label>
                 <input type="password" id="password" name="password" required>
                 @error('password')
-                    <span class="error">{{ $message }}</span>
+                    <span class="error">Contraseña incorrecta</span>
                 @enderror
-            </div>
-
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" name="remember"> Recordarme
-                </label>
             </div>
 
             <button type="submit">Iniciar sesión</button>
@@ -45,7 +44,9 @@
 <style>
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-image: url("{{ asset('img/fondo.gif') }}");
+    background-position: center;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -53,12 +54,41 @@ body {
     margin: 0;
 }
 
+.black{
+    position: absolute;
+    background-color: black;
+    opacity: 40%;
+    width: 100%;
+    height: 100vh;
+    z-index: 1000;
+}
+
+.logo{
+    z-index: 1002;
+    background-color: rgba(255, 255, 255, 0.36);
+    padding: 50px;
+    border-radius: 15px;
+}
+
 .login-container {
-    background-color: #fff;
-    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.71);
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 300px;
+    z-index: 1001;
+    padding: 30px 20px;
+
+}
+
+.foto{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.foto img{
+    max-width: 100px;
+
 }
 
 h2 {
@@ -78,14 +108,14 @@ label {
 
 input[type="email"],
 input[type="password"] {
-    width: 95%;
+    width: 93%;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
 
 button {
-    width: 100%;
+    width: 99%;
     padding: 10px;
     background-color: #007bff;
     color: white;

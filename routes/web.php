@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TwitterController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CommentController;
 
 // Rutas de autenticación
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -21,6 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/publicacion/{id}/like', [TwitterController::class, 'like'])->name('publicacion.like');
     Route::post('/publicacion/{id}/retweet', [TwitterController::class, 'retweet'])->name('publicacion.retweet');
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
+    Route::post('/publicaciones/{id}/comments', [CommentController::class, 'store'])->name('comments.store');
 
 
     // Ruta protegida para el dashboard
