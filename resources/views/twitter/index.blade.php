@@ -6,6 +6,8 @@
     <title>Mi Twitter</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="shortcut icon" href="https://cdn.iconscout.com/icon/free/png-256/free-twitter-logo-icon-download-in-svg-png-gif-file-formats--social-media-pack-logos-icons-721979.png?f=webp&w=256" type="image/x-icon">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         /* Estilos para el tema claro y oscuro */
@@ -54,6 +56,10 @@
             border-radius: 20px;
             padding: 8px 15px;
             font-size: 0.9rem;
+        }
+
+        .papelera{
+            margin-top: -5px;
         }
     </style>
 </head>
@@ -108,17 +114,25 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ $publicacion->usuario->name }}</h5>
                                 <p class="card-text">{{ $publicacion->contenido }}</p>
+                                <p class="card-text"><small class="card-text">Publicado el {{ $publicacion->created_at->format('d M Y \a \l\a\s H:i') }}</small></p>
                                 
                                 <!-- Comment Section -->
-                                <p class="card-text"> -> Comentarios:</p>
                                 <div class="comments mt-3">
                                     @foreach ($publicacion->comments as $comment)
                                         <div class="comment mb-2">
                                             <strong>{{ $comment->user->name }}</strong>: {{ $comment->content }}
+                                            @if($comment->user->id == Auth::id())
+                                                <a href="{{ route('comments.edit', $comment->id) }}"><i class="bi bi-pencil-square"></i></a>
+                                                <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn papelera"><i class="bi bi-trash3 text-danger"></i></button>
+                                                </form>
+                                            @endif
                                         </div>
                                     @endforeach
                                 </div>
-                                <br>
+
                                 <!-- Add Comment Form -->
                                 <form action="{{ route('comments.store', $publicacion->id) }}" method="POST">
                                     @csrf

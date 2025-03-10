@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Publicación</title>
+    <title>Editar Comentario</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="https://cdn.iconscout.com/icon/free/png-256/free-twitter-logo-icon-download-in-svg-png-gif-file-formats--social-media-pack-logos-icons-721979.png?f=webp&w=256" type="image/x-icon">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
+
+</head>
+<style>
         /* Estilos para el tema claro y oscuro */
         .light-theme {
             --bg-color: white;
@@ -89,42 +90,40 @@
             </div>
         </div>
     </nav>
-
     <div class="container mt-4">
         <div class="row">
             <div class="col-md-8 offset-md-2">
-                <h1>Editar Publicación</h1>
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <form action="{{ route('publicacion.update', $publicacion->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <div class="mb-3">
-                                <textarea name="contenido" class="form-control" rows="3" required>{{ $publicacion->contenido }}</textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Actualizar</button>
-                        </form>
+                <h2>Editar Comentario</h2>
+                <form action="{{ route('comments.update', $comment->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="mb-3">
+                        <textarea name="content" class="form-control" rows="3" required>{{ $comment->content }}</textarea>
                     </div>
-                </div>
+                    <button type="submit" class="btn btn-primary">Actualizar Comentario</button>
+                </form>
             </div>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script>
-        $(document).ready(function() {
-            // Manejar el cambio de tema
-            const themeToggle = document.getElementById('theme-toggle');
-            const currentTheme = localStorage.getItem('theme') || 'light';
-            document.documentElement.className = currentTheme + '-theme';
+    document.addEventListener("DOMContentLoaded", () => {
+        // Obtener el tema guardado en localStorage o establecer 'light' por defecto
+        let currentTheme = localStorage.getItem("theme") || "light";
+        document.documentElement.classList.remove("light-theme", "dark-theme"); // Eliminar clases previas
+        document.documentElement.classList.add(currentTheme + "-theme"); // Aplicar tema actual
 
-            themeToggle.addEventListener('click', () => {
-                let theme = document.documentElement.className.includes('light') ? 'dark' : 'light';
-                document.documentElement.className = theme + '-theme';
-                localStorage.setItem('theme', theme);
-            });
+        // Manejar el botón de cambio de tema
+        const themeToggle = document.getElementById("theme-toggle");
+        themeToggle.addEventListener("click", () => {
+            let newTheme = document.documentElement.classList.contains("light-theme") ? "dark" : "light";
+            document.documentElement.classList.remove("light-theme", "dark-theme");
+            document.documentElement.classList.add(newTheme + "-theme");
+            localStorage.setItem("theme", newTheme);
         });
-    </script>
+    });
+</script>
+
 </body>
 </html>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
@@ -12,11 +12,6 @@ class TwitterController extends Controller
     {
         $publicaciones = Publicacion::orderBy('created_at', 'desc')->get();
         return view('twitter.index', compact('publicaciones'));
-    }
-
-    public function obtenerTodas()
-    {
-        return response()->json(Publicacion::all());
     }
 
     public function store(Request $request)
@@ -60,5 +55,4 @@ class TwitterController extends Controller
 
         return redirect()->route('publicacion.index');
     }
-
 }

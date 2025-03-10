@@ -23,6 +23,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/publicacion/{id}/retweet', [TwitterController::class, 'retweet'])->name('publicacion.retweet');
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
     Route::post('/publicaciones/{id}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::get('/comments/{id}/edit', [CommentController::class, 'edit'])->name('comments.edit');
+    Route::put('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');
+    Route::delete('/comments/{id}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
 
     // Ruta protegida para el dashboard
