@@ -168,7 +168,6 @@
         function buscarUsuario() {
             const query = document.getElementById('searchBox').value.toLowerCase();
             const publicaciones = document.querySelectorAll('.publicacion');
-            const paginationNav = document.getElementById('paginationNav'); // Obtener el contenedor de la paginación
 
             let hayCoincidencias = false;
 
@@ -183,12 +182,6 @@
                 }
             });
 
-            // Ocultar la paginación si hay búsqueda activa, mostrarla si no hay búsqueda
-            if (query.trim() !== "" && hayCoincidencias) {
-                paginationNav.classList.add('d-none');
-            } else {
-                paginationNav.classList.remove('d-none');
-            }
         }
     </script>
 </body>
